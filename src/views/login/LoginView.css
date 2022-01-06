@@ -1,0 +1,16 @@
+.login {
+  height: 100vh;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.form-box {
+  -webkit-box-shadow: 5px 5px 26px -1px rgba(0,0,0,0.5); 
+  box-shadow: 5px 5px 26px -1px rgba(0,0,0,0.5);
+  padding-top: 25px !important;
+}
+.paddingTop25{
+
+  padding-top: 25px !important;
+}
