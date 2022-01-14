@@ -5,13 +5,18 @@ const initialState = [];
 
 export const createBox = createAsyncThunk(
 	"boxes/create",
-	async ({ title, description }) => {
-		const res = await BoxDataService.create({ title, description });
+	async ({ name, address }) => {
+		const res = await BoxDataService.create({ name, address });
 		return res.data;
 	}
 );
 
-export const retrieveBoxes = createAsyncThunk("boxes/retrieve", async () => {
+export const getBox = createAsyncThunk("boxes/findByTitle", async ({ id }) => {
+	const res = await BoxDataService.get(id);
+	return res.data;
+});
+
+export const retrieveBoxes = createAsyncThunk("/boxes/all", async () => {
 	const res = await BoxDataService.getAll();
 	return res.data;
 });
@@ -29,21 +34,21 @@ export const deleteBox = createAsyncThunk("boxes/delete", async ({ id }) => {
 	return { id };
 });
 
-export const deleteAllBoxes = createAsyncThunk("boxes/deleteAll", async () => {
-	const res = await BoxDataService.removeAll();
-	return res.data;
-});
+// export const deleteAllBoxes = createAsyncThunk("boxes/deleteAll", async () => {
+// 	const res = await BoxDataService.removeAll();
+// 	return res.data;
+// });
 
-export const findBoxByTitle = createAsyncThunk(
+export const getBoxByDelivererId = createAsyncThunk(
 	"boxes/findByTitle",
-	async ({ title }) => {
-		const res = await BoxDataService.findByTitle(title);
+	async ({ delivererId }) => {
+		const res = await BoxDataService.getByDelivererId(delivererId);
 		return res.data;
 	}
 );
 
 const boxSlice = createSlice({
-	name: "box",
+	name: "boxes",
 	initialState,
 	extraReducers: {
 		[createBox.fulfilled]: (state, action) => {
@@ -65,10 +70,14 @@ const boxSlice = createSlice({
 			let index = state.findIndex(({ id }) => id === action.payload.id);
 			state.splice(index, 1);
 		},
-		[deleteAllBoxes.fulfilled]: (state, action) => {
-			return [];
+		// [deleteAllBoxes.fulfilled]: (state, action) => {
+		// 	return [];
+		// },
+		[getBoxByDelivererId.fulfilled]: (state, action) => {
+			return [...action.payload];
 		},
-		[findBoxByTitle.fulfilled]: (state, action) => {
+
+		[getBox.fulfilled]: (state, action) => {
 			return [...action.payload];
 		},
 	},
