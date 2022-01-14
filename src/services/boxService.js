@@ -1,4 +1,4 @@
-import http from "http-common";
+import http from "../services/http-common";
 
 const getAll = () => {
 	return http.get("/boxes");
