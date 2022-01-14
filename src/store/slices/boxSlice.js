@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import BoxDataService from "../services/boxService";
+import BoxDataService from "../../services/boxService";
 
 const initialState = [];
 
-export const createTutorial = createAsyncThunk(
+export const createBox = createAsyncThunk(
 	"boxes/create",
 	async ({ title, description }) => {
 		const res = await BoxDataService.create({ title, description });
@@ -11,15 +11,12 @@ export const createTutorial = createAsyncThunk(
 	}
 );
 
-export const retrieveboxes = createAsyncThunk(
-	"boxes/retrieve",
-	async () => {
-		const res = await BoxDataService.getAll();
-		return res.data;
-	}
-);
+export const retrieveBoxes = createAsyncThunk("boxes/retrieve", async () => {
+	const res = await BoxDataService.getAll();
+	return res.data;
+});
 
-export const updateTutorial = createAsyncThunk(
+export const updateBox = createAsyncThunk(
 	"boxes/update",
 	async ({ id, data }) => {
 		const res = await BoxDataService.update(id, data);
@@ -27,23 +24,17 @@ export const updateTutorial = createAsyncThunk(
 	}
 );
 
-export const deleteTutorial = createAsyncThunk(
-	"boxes/delete",
-	async ({ id }) => {
-		await BoxDataService.remove(id);
-		return { id };
-	}
-);
+export const deleteBox = createAsyncThunk("boxes/delete", async ({ id }) => {
+	await BoxDataService.remove(id);
+	return { id };
+});
 
-export const deleteAllboxes = createAsyncThunk(
-	"boxes/deleteAll",
-	async () => {
-		const res = await BoxDataService.removeAll();
-		return res.data;
-	}
-);
+export const deleteAllBoxes = createAsyncThunk("boxes/deleteAll", async () => {
+	const res = await BoxDataService.removeAll();
+	return res.data;
+});
 
-export const findboxesByTitle = createAsyncThunk(
+export const findBoxByTitle = createAsyncThunk(
 	"boxes/findByTitle",
 	async ({ title }) => {
 		const res = await BoxDataService.findByTitle(title);
@@ -58,7 +49,7 @@ const boxSlice = createSlice({
 		[createBox.fulfilled]: (state, action) => {
 			state.push(action.payload);
 		},
-		[retrieveboxes.fulfilled]: (state, action) => {
+		[retrieveBoxes.fulfilled]: (state, action) => {
 			return [...action.payload];
 		},
 		[updateBox.fulfilled]: (state, action) => {
