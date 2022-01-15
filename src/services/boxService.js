@@ -9,7 +9,7 @@ const get = (id) => {
 };
 
 const getByDelivererId = (delivererId) => {
-	return http.get(`/boxes/delivererId?${delivererId}`);
+	return http.get(`/boxes?delivererId=${delivererId}`);
 };
 
 const create = (data) => {
