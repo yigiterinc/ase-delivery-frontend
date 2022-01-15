@@ -59,7 +59,7 @@ const boxSlice = createSlice({
 		},
 		[updateBox.fulfilled]: (state, action) => {
 			const index = state.findIndex(
-				(tutorial) => tutorial.id === action.payload.id
+				(box) => box.id === action.payload.id
 			);
 			state[index] = {
 				...state[index],
