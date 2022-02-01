@@ -5,7 +5,7 @@
 We will continue with npm instead of yarn for running the frontend.
 
 ## Local Dev Run
-npm install
+npm install ;
 npm run start
 
 ## Dev Run in Docker
