@@ -9,6 +9,6 @@ npm install ;
 npm run start
 
 ## Dev Run in Docker
-npm install
-docker build -t ase-frontend-image-dev .   
-docker run -p 3000:3000 ase-frontend-image-dev
+npm install;  
+docker build -t ase-frontend-image-dev .   ;
+docker run -p 3000:3000 ase-frontend-image-dev ;
