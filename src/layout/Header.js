@@ -2,6 +2,8 @@ import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShippingFast } from '@fortawesome/free-solid-svg-icons'
 
 import { userLogout } from "../api/userApi";
 
@@ -18,7 +20,7 @@ export const Header = () => {
   return (
     <Navbar collapseOnSelect bg="info" variant="dark" expand="md">
       <Navbar.Brand>
-        ASE_LOGO
+        <FontAwesomeIcon icon={faShippingFast}/> ASE Delivery
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">

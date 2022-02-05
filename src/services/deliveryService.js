@@ -8,11 +8,11 @@ const getDeliverybyId = (id) => {
 	return http.get(`/deliveries/${id}`);
 };
 
-const getActiveDeliveriesByCustomerId = (custormerId) => {
+const getActiveDeliveriesByCustomerId = (customerId) => {
 	return http.get(`/customer/${customerId}/status/active`);
 };
 
-const getPastDeliveriesByCustomerId = (custormerId) => {
+const getPastDeliveriesByCustomerId = (customerId) => {
 	return http.get(`/customer/${customerId}/status/delivered`);
 };
 
@@ -49,7 +49,7 @@ const deliveryService = {
 	getDeliverybyId,
 	getActiveDeliveriesByCustomerId,
 	getPastDeliveriesByCustomerId,
-	getDeliveryByTrackingId,
+	//getDeliveryByTrackingId,
 	createDelivery,
 	onDeliveriesCollected,
 	onDeliveryDeposited,
