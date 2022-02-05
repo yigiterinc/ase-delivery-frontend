@@ -24,8 +24,8 @@ export const getDeliverybyId = createAsyncThunk(
 	}
 );
 
-export const retrieveDeliveries = createAsyncThunk(
-	"/deliveries/all",
+export const getDeliveries = createAsyncThunk(
+	"/deliveries/getDeliveries",
 	async () => {
 		const res = await DeliveryDataService.getAllDeliveries();
 		return res.data;
@@ -52,25 +52,27 @@ export const getPastDeliveriesByCustomerId = createAsyncThunk(
 	}
 );
 
-export const getDeliveryByTrackingId = createAsyncThunk(
-	"deliveries/getDeliveryByTrackingId",
-	async ({ trackingId }) => {
-		const res = await DeliveryDataService.getDeliveryByTrackingId(trackingId);
+// export const getDeliveryByTrackingId = createAsyncThunk(
+// 	"deliveries/getDeliveryByTrackingId",
+// 	async ({ trackingId }) => {
+// 		const res = await DeliveryDataService.getDeliveryByTrackingId(
+// 			trackingId
+// 		);
+// 		return res.data;
+// 	}
+// );
+
+export const onDeliveriesCollected = createAsyncThunk(
+	"deliveries/onDeliveriesCollected",
+	async ({ ids, delivererId }) => {
+		const res = await DeliveryDataService.onDeliveriesCollected(ids);
 		return res.data;
 	}
 );
 
-export const updateDeliveryStatusCollected = createAsyncThunk(
-	"deliveries/updateDeliveryStatusCollected",
-	async ({ ids }) => {
-		const res = await DeliveryDataService.updateDeliveryStatusCollected(ids);
-		return res.data;
-	}
-);
-
-export const updateDeliveryStatusDeposited = createAsyncThunk(
-	"deliveries/updateDeliveryStatusDeposited",
-	async ({ delivererId, boxId }) => {
+export const onDeliveryDeposited = createAsyncThunk(
+	"deliveries/onDeliveryDeposited",
+	async ({ deliveryId, delivererId, boxId }) => {
 		const res = await DeliveryDataService.updateDeliveryStatusDeposited(
 			delivererId,
 			boxId
@@ -79,11 +81,11 @@ export const updateDeliveryStatusDeposited = createAsyncThunk(
 	}
 );
 
-export const updateDeliveryStatusDelivered = createAsyncThunk(
-	"deliveries/updateDeliveryStatusDelivered",
-	async ({ customerId, boxId }) => {
+export const onDeliveryDelivered = createAsyncThunk(
+	"deliveries/onDeliveryDelivered",
+	async ({ userId, boxId }) => {
 		const res = await DeliveryDataService.updateDeliveryStatusDelivered(
-			customerId,
+			userId,
 			boxId
 		);
 		return res.data;
@@ -110,7 +112,7 @@ const deliverySlice = createSlice({
 		[createDelivery.fulfilled]: (state, action) => {
 			state.push(action.payload);
 		},
-		[retrieveDeliveries.fulfilled]: (state, action) => {
+		[getDeliveries.fulfilled]: (state, action) => {
 			return [...action.payload];
 		},
 		[getActiveDeliveriesByCustomerId.fulfilled]: (state, action) => {
@@ -119,7 +121,7 @@ const deliverySlice = createSlice({
 		[getPastDeliveriesByCustomerId.fulfilled]: (state, action) => {
 			return [...action.payload];
 		},
-		[updateDeliveryStatusCollected.fulfilled]: (state, action) => {
+		[onDeliveriesCollected.fulfilled]: (state, action) => {
 			const index = state.findIndex(
 				(delivery) => delivery.id === action.payload.id
 			);
@@ -128,7 +130,7 @@ const deliverySlice = createSlice({
 				...action.payload,
 			};
 		},
-		[updateDeliveryStatusDeposited.fulfilled]: (state, action) => {
+		[onDeliveryDeposited.fulfilled]: (state, action) => {
 			const index = state.findIndex(
 				(delivery) => delivery.id === action.payload.id
 			);
@@ -137,7 +139,7 @@ const deliverySlice = createSlice({
 				...action.payload,
 			};
 		},
-		[updateDeliveryStatusDelivered.fulfilled]: (state, action) => {
+		[onDeliveryDelivered.fulfilled]: (state, action) => {
 			const index = state.findIndex(
 				(delivery) => delivery.id === action.payload.id
 			);
@@ -150,9 +152,6 @@ const deliverySlice = createSlice({
 			let index = state.findIndex(({ id }) => id === action.payload.id);
 			state.splice(index, 1);
 		},
-		// [deleteAllDeliveryes.fulfilled]: (state, action) => {
-		//      return [];
-		// },
 
 		[getDeliverybyId.fulfilled]: (state, action) => {
 			return [...action.payload];

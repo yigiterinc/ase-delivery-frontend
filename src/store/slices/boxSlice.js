@@ -5,34 +5,37 @@ const initialState = [];
 
 export const createBox = createAsyncThunk(
 	"boxes/create",
-	async ({ name, address }) => {
-		const res = await BoxDataService.create({ name, address });
+	async ({ name, data }) => {
+		const res = await BoxDataService.create({ name, data });
 		return res.data;
 	}
 );
 
-export const getBox = createAsyncThunk("boxes/findByTitle", async ({ id }) => {
+export const getBox = createAsyncThunk("boxes/getById", async ({ id }) => {
 	const res = await BoxDataService.get(id);
 	return res.data;
 });
 
-export const retrieveBoxes = createAsyncThunk("/boxes/all", async () => {
+export const getBoxes = createAsyncThunk("/boxes/all", async () => {
 	const res = await BoxDataService.getAll();
 	return res.data;
 });
 
 export const updateBox = createAsyncThunk(
-	"boxes/update",
+	"boxes/updateById",
 	async ({ id, data }) => {
 		const res = await BoxDataService.update(id, data);
 		return res.data;
 	}
 );
 
-export const deleteBox = createAsyncThunk("boxes/delete", async ({ id }) => {
-	await BoxDataService.remove(id);
-	return { id };
-});
+export const deleteBox = createAsyncThunk(
+	"boxes/deleteById",
+	async ({ id }) => {
+		await BoxDataService.remove(id);
+		return { id };
+	}
+);
 
 // export const deleteAllBoxes = createAsyncThunk("boxes/deleteAll", async () => {
 // 	const res = await BoxDataService.removeAll();
@@ -40,7 +43,7 @@ export const deleteBox = createAsyncThunk("boxes/delete", async ({ id }) => {
 // });
 
 export const getBoxByDelivererId = createAsyncThunk(
-	"boxes/findByTitle",
+	"boxes/getByDelivererId",
 	async ({ delivererId }) => {
 		const res = await BoxDataService.getByDelivererId(delivererId);
 		return res.data;
@@ -54,7 +57,7 @@ const boxSlice = createSlice({
 		[createBox.fulfilled]: (state, action) => {
 			state.push(action.payload);
 		},
-		[retrieveBoxes.fulfilled]: (state, action) => {
+		[getBoxes.fulfilled]: (state, action) => {
 			return [...action.payload];
 		},
 		[updateBox.fulfilled]: (state, action) => {
@@ -70,13 +73,9 @@ const boxSlice = createSlice({
 			let index = state.findIndex(({ id }) => id === action.payload.id);
 			state.splice(index, 1);
 		},
-		// [deleteAllBoxes.fulfilled]: (state, action) => {
-		// 	return [];
-		// },
 		[getBoxByDelivererId.fulfilled]: (state, action) => {
 			return [...action.payload];
 		},
-
 		[getBox.fulfilled]: (state, action) => {
 			return [...action.payload];
 		},

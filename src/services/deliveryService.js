@@ -1,7 +1,7 @@
 import http from "../services/http-common";
 
 const getAllDeliveries = () => {
-	return http.get("/deliveries/all");
+	return http.get("/deliveries");
 };
 
 const getDeliverybyId = (id) => {
@@ -9,11 +9,11 @@ const getDeliverybyId = (id) => {
 };
 
 const getActiveDeliveriesByCustomerId = (custormerId) => {
-	return http.get(`/deliveries/active?custormerId=${custormerId}`);
+	return http.get(`/customer/${customerId}/status/active`);
 };
 
 const getPastDeliveriesByCustomerId = (custormerId) => {
-	return http.get(`/deliveries/past?custormerId=${custormerId}`);
+	return http.get(`/customer/${customerId}/status/delivered`);
 };
 
 const getDeliveryByTrackingId = (trackingId) => {
@@ -24,20 +24,20 @@ const createDelivery = (data) => {
 	return http.post("/deliveries", data);
 };
 
-const updateDeliveryStatusCollected = (ids) => {
-	return http.put(`/deliveries/${ids.join(",")}`);
-};
-
-const updateDeliveryStatusDeposited = (delivererId, boxId) => {
+const onDeliveriesCollected = (ids, delivererId) => {
 	return http.put(
-		`/deliveries/deposited?delivererId=${delivererId}&boxId=${boxId}`
+		`/deliveries/${ids.join(",")}/collected/deliverer/${delivererId}`
 	);
 };
 
-const updateDeliveryStatusDelivered = (customerId, boxId) => {
+const onDeliveryDeposited = (deliveryId, delivererId, boxId) => {
 	return http.put(
-		`/deliveries/delivered?customerId=${customerId}&boxId=${boxId}`
+		`/deliveries/${deliveryId}/deposited/deliverer/${delivererId}/box/${boxId}`
 	);
+};
+
+const onDeliveryDelivered = (userId, boxId) => {
+	return http.put(`/deliveries/user/${userId}/delivered/box/${boxId}`);
 };
 
 const removeDelivery = (id) => {
@@ -51,9 +51,9 @@ const deliveryService = {
 	getPastDeliveriesByCustomerId,
 	getDeliveryByTrackingId,
 	createDelivery,
-	updateDeliveryStatusCollected,
-	updateDeliveryStatusDeposited,
-	updateDeliveryStatusDelivered,
+	onDeliveriesCollected,
+	onDeliveryDeposited,
+	onDeliveryDelivered,
 	removeDelivery,
 };
 
