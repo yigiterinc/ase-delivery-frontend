@@ -1,5 +1,10 @@
 import http from "../services/http-common";
 
+const HOST = "http://localhost:8080"
+const DELIVERY_SERVICE_BASE_URL = HOST + "/api/ds"
+const DELIVERIES_BASE_URL = DELIVERY_SERVICE_BASE_URL + "/deliveries"
+const CHANGE_DELIVERY_STATUS_COLLECTED_URL = (deliveryIds, delivererId) => `${deliveryIds.join(",")}/collected/deliverer/${delivererId}`
+
 const getAllDeliveries = () => {
 	return http.get("/deliveries");
 };
@@ -21,7 +26,7 @@ const getDeliveryByTrackingId = (trackingId) => {
 };
 
 const createDelivery = (data) => {
-	return http.post("/deliveries", data);
+	return http.post(DELIVERIES_BASE_URL, data);
 };
 
 const onDeliveriesCollected = (ids, delivererId) => {

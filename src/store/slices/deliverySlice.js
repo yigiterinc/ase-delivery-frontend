@@ -5,12 +5,11 @@ const initialState = [];
 
 export const createDelivery = createAsyncThunk(
 	"deliveries/createDelivery",
-	async ({ boxId, customerId, delivererId, description }) => {
-		const res = await DeliveryDataService.create({
+	async ({ boxId, customerId, delivererId }) => {
+		const res = await DeliveryDataService.createDelivery({
 			boxId,
 			customerId,
-			delivererId,
-			description,
+			delivererId
 		});
 		return res.data;
 	}

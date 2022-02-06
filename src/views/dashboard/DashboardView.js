@@ -11,6 +11,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import ElementListing from "./ElementListing";
 import "./Dashboard.css";
+import {createDelivery} from "../../store/slices/deliverySlice";
 
 export const DashboardView = () => {
 
@@ -29,6 +30,31 @@ export const DashboardView = () => {
   let boxArray = {columns:[{dataField: 'ID', text:'ID'}, {dataField: 'Name', text:'Name'}, {dataField: 'Address', text:'Address'}],
                   data: [{ID: "Box1", Name: "BoxName1", Address: "BoxAddress1"}]
                   };
+
+  const handleCreateBox = () => {
+    console.log("creating box");
+    setShowCreate(false);
+    // ToDo: Code to create new entry in database
+  }
+
+  const handleCreateDelivery = (boxId, customerId, delivererId) => {
+    console.log("creating delivery");
+    setShowCreate(false);
+    const delivery = {
+      boxId,
+      customerId,
+      delivererId
+    }
+
+    const data = createDelivery(delivery)
+    console.log(data)
+  }
+
+  const handleCreateUser = () => {
+    console.log("creating user");
+    setShowCreate(false);
+    // ToDo: Code to create new entry in database
+  }
 
   return (
     <Container fluid>

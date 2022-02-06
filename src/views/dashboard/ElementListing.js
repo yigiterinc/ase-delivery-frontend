@@ -31,15 +31,12 @@ function ElementListing(props){
     }
   }
   const handleOnSelect = (row) => setSelectedRow(row.ID)
-  const handleCreate = () => {
-    setShowCreate(false);
-    // ToDo: Code to create new entry in database
-  }
+
   const handleDelete = () => {
     setShowDelete(false);
     // ToDo: Code to delete row with `selectedRow` id from database
     console.log(selectedRow);
-  } 
+  }
   
   const selectRow = {
       mode: 'radio',
@@ -79,7 +76,7 @@ function ElementListing(props){
                   <Button variant="secondary" onClick={() => setShowCreate(false)}>
                     Cancel
                   </Button>
-                  <Button variant="primary" type="submit" onClick={handleCreate}>
+                  <Button variant="primary" type="submit" onClick={() => props.onCreate()}>
                     Create
                   </Button>
                 </Modal.Footer>
