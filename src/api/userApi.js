@@ -6,7 +6,6 @@ const userProfileUrl = rootUrl + "user";
 const logoutUrl = rootUrl + "user/logout";
 const newJWToken = rootUrl + "tokens";
 
-
 export const userLogin = (frmData) => {
   return new Promise(async (resolve, reject) => {
     try {

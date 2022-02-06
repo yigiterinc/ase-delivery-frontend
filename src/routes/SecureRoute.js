@@ -6,8 +6,6 @@ import { getUserProfile } from "../store/actions/userAction";
 
 import { fetchJWT } from "../api/userApi";
 
-import { DefaultLayout } from "../layout/DefaultLayout";
-
 export const SecureRoute = ({ children, ...rest }) => {
 	const dispatch = useDispatch();
 	const { isAuth } = useSelector(state => state.login);
@@ -33,7 +31,7 @@ export const SecureRoute = ({ children, ...rest }) => {
 			{...rest}
 			render={({ location }) =>
 				isAuth ? (
-					<DefaultLayout>{children}</DefaultLayout>
+					<>{children}</>
 				) : (
 					<Redirect
 						to={{

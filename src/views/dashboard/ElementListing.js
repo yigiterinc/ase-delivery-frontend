@@ -4,9 +4,8 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlusSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-import "./Dashboard.css";
 
-function ElementListing(props){
+function ElementListing(props) {
     
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -15,7 +14,7 @@ function ElementListing(props){
   
   const createForm = (array) => {
     if(array.length > 0){
-      return(        
+      return(
         array.map(function(each){
           const placeholder = 'Enter ' + each.text;
           return(
@@ -24,7 +23,7 @@ function ElementListing(props){
               <Form.Control type="text" placeholder={placeholder} />
             </Form.Group>
           )
-        })          
+        })
       );
     } else {
       return []
@@ -44,7 +43,7 @@ function ElementListing(props){
       clickToEdit: true,
       bgColor: '#20202e',
       onSelect: handleOnSelect
-    };
+  };
 
   return(
       <Card bg='dark' text='white'>
