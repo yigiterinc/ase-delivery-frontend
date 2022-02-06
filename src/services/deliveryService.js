@@ -3,26 +3,21 @@ import http from "../services/http-common";
 const HOST = "http://localhost:8080"
 const DELIVERY_SERVICE_BASE_URL = HOST + "/api/ds"
 const DELIVERIES_BASE_URL = DELIVERY_SERVICE_BASE_URL + "/deliveries"
-const CHANGE_DELIVERY_STATUS_COLLECTED_URL = (deliveryIds, delivererId) => `${deliveryIds.join(",")}/collected/deliverer/${delivererId}`
 
 const getAllDeliveries = () => {
-	return http.get("/deliveries");
+	return http.get(DELIVERIES_BASE_URL);
 };
 
-const getDeliverybyId = (id) => {
-	return http.get(`/deliveries/${id}`);
+const getDeliveryById = (id) => {
+	return http.get(DELIVERIES_BASE_URL + `/${id}`);
 };
 
-const getActiveDeliveriesByCustomerId = (customerId) => {
-	return http.get(`/customer/${customerId}/status/active`);
+const getActiveDeliveriesOfCustomer = (customerId) => {
+	return http.get(DELIVERIES_BASE_URL + `/customer/${customerId}/status/active`);
 };
 
-const getPastDeliveriesByCustomerId = (customerId) => {
-	return http.get(`/customer/${customerId}/status/delivered`);
-};
-
-const getDeliveryByTrackingId = (trackingId) => {
-	return http.get(`/deliveries?trackingId=${trackingId}`);
+const getPastDeliveriesOfCustomer = (customerId) => {
+	return http.get(DELIVERIES_BASE_URL + `/customer/${customerId}/status/delivered`);
 };
 
 const createDelivery = (data) => {
@@ -31,35 +26,34 @@ const createDelivery = (data) => {
 
 const onDeliveriesCollected = (ids, delivererId) => {
 	return http.put(
-		`/deliveries/${ids.join(",")}/collected/deliverer/${delivererId}`
+		DELIVERIES_BASE_URL + `/${ids.join(",")}/collected/deliverer/${delivererId}`
 	);
 };
 
 const onDeliveryDeposited = (deliveryId, delivererId, boxId) => {
 	return http.put(
-		`/deliveries/${deliveryId}/deposited/deliverer/${delivererId}/box/${boxId}`
+		DELIVERIES_BASE_URL + `/${deliveryId}/deposited/deliverer/${delivererId}/box/${boxId}`
 	);
 };
 
 const onDeliveryDelivered = (userId, boxId) => {
-	return http.put(`/deliveries/user/${userId}/delivered/box/${boxId}`);
+	return http.put(DELIVERIES_BASE_URL + `/user/${userId}/delivered/box/${boxId}`);
 };
 
-const removeDelivery = (id) => {
-	return http.delete(`/deliveries/${id}`);
+const deleteDelivery = (id) => {
+	return http.delete(`/${id}`);
 };
 
 const deliveryService = {
 	getAllDeliveries,
-	getDeliverybyId,
-	getActiveDeliveriesByCustomerId,
-	getPastDeliveriesByCustomerId,
-	//getDeliveryByTrackingId,
+	getDeliveryById,
+	getActiveDeliveriesOfCustomer,
+	getPastDeliveriesOfCustomer,
 	createDelivery,
 	onDeliveriesCollected,
 	onDeliveryDeposited,
 	onDeliveryDelivered,
-	removeDelivery,
+	deleteDelivery,
 };
 
 export default deliveryService;

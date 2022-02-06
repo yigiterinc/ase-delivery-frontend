@@ -5,26 +5,26 @@ const initialState = [];
 
 export const createBox = createAsyncThunk(
 	"boxes/create",
-	async ({ name, data }) => {
-		const res = await BoxDataService.create({ name, data });
+	async ({ stationName, stationAddress }) => {
+		const res = await BoxDataService.createBox({ stationName, stationAddress });
 		return res.data;
 	}
 );
 
 export const getBox = createAsyncThunk("boxes/getById", async ({ id }) => {
-	const res = await BoxDataService.get(id);
+	const res = await BoxDataService.getBoxById(id);
 	return res.data;
 });
 
 export const getBoxes = createAsyncThunk("/boxes/all", async () => {
-	const res = await BoxDataService.getAll();
+	const res = await BoxDataService.getAllBoxes();
 	return res.data;
 });
 
 export const updateBox = createAsyncThunk(
 	"boxes/updateById",
 	async ({ id, data }) => {
-		const res = await BoxDataService.update(id, data);
+		const res = await BoxDataService.updateBox(id, data);
 		return res.data;
 	}
 );
@@ -32,20 +32,15 @@ export const updateBox = createAsyncThunk(
 export const deleteBox = createAsyncThunk(
 	"boxes/deleteById",
 	async ({ id }) => {
-		await BoxDataService.remove(id);
+		await BoxDataService.deleteBox(id);
 		return { id };
 	}
 );
 
-// export const deleteAllBoxes = createAsyncThunk("boxes/deleteAll", async () => {
-// 	const res = await BoxDataService.removeAll();
-// 	return res.data;
-// });
-
 export const getBoxByDelivererId = createAsyncThunk(
 	"boxes/getByDelivererId",
 	async ({ delivererId }) => {
-		const res = await BoxDataService.getByDelivererId(delivererId);
+		const res = await BoxDataService.getBoxByDelivererId(delivererId);
 		return res.data;
 	}
 );

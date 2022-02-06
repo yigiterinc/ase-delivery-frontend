@@ -5,6 +5,8 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlusSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import "./Dashboard.css";
+import {createDelivery} from "../../store/slices/deliverySlice";
+import {createBox} from "../../store/slices/boxSlice";
 
 function ElementListing(props){
     
@@ -37,6 +39,38 @@ function ElementListing(props){
     // ToDo: Code to delete row with `selectedRow` id from database
     console.log(selectedRow);
   }
+
+  const handleCreateBox = (stationName, stationAddress) => {
+    console.log("creating box");
+    setShowCreate(false);
+    const box = {
+      stationName,
+      stationAddress
+    };
+
+    const data = createBox(box);
+    console.log("box sent")
+    console.log(data);
+  };
+
+  const handleCreateDelivery = (boxId, customerId, delivererId) => {
+    console.log("creating delivery");
+    setShowCreate(false);
+    const delivery = {
+      boxId,
+      customerId,
+      delivererId,
+    };
+
+    const data = createDelivery(delivery);
+    console.log(data);
+  };
+
+  const handleCreateUser = () => {
+    console.log("creating user");
+    setShowCreate(false);
+    // ToDo: Code to create new entry in database
+  };
   
   const selectRow = {
       mode: 'radio',
@@ -76,7 +110,7 @@ function ElementListing(props){
                   <Button variant="secondary" onClick={() => setShowCreate(false)}>
                     Cancel
                   </Button>
-                  <Button variant="primary" type="submit" onClick={() => props.onCreate()}>
+                  <Button variant="primary" type="submit" onClick={handleCreateBox}>
                     Create
                   </Button>
                 </Modal.Footer>

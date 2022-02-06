@@ -80,7 +80,7 @@ export const DashboardView = () => {
     data: [{ ID: "Box1", Name: "BoxName1", Address: "BoxAddress1" }],
   };
 
-  const handleCreateBox = () => {
+  /*const handleCreateBox = () => {
     console.log("creating box");
     setShowCreate(false);
     // ToDo: Code to create new entry in database
@@ -103,7 +103,7 @@ export const DashboardView = () => {
     console.log("creating user");
     setShowCreate(false);
     // ToDo: Code to create new entry in database
-  };
+  };*/
 
   return (
     <Container fluid>
