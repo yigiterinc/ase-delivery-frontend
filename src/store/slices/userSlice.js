@@ -1,10 +1,40 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import UserDataService from "../../services/userService";
 
 const initialState = {
   user: {},
   isLoading: false,
   error: "",
 };
+
+export const createUser = createAsyncThunk(
+    "user/create",
+    async ({ email, password, role }) => {
+      const res = await UserDataService.createUser({ email, password, role });
+      return res.data;
+    }
+);
+
+export const getAllUsers = createAsyncThunk("/user/all", async () => {
+  const res = await UserDataService.getAllUsers();
+  return res.data;
+});
+
+export const getUserById = createAsyncThunk("user/getById", async ({ id }) => {
+  const res = await UserDataService.getUserById(id);
+  return res.data;
+});
+
+export const getUserRole = createAsyncThunk("user/getUserRole", async ({ id }) => {
+  const res = await UserDataService.getUserRole(id);
+  return res.data;
+});
+
+export const deleteUserById = createAsyncThunk("user/deleteUserById", async ({ id }) => {
+  const res = await UserDataService.deleteUser(id);
+  return res.data;
+});
+
 
 const userSlice = createSlice({
   name: "user",

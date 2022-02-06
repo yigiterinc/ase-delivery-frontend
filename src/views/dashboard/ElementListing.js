@@ -36,7 +36,7 @@ function ElementListing(props) {
     // ToDo: Code to delete row with `selectedRow` id from database
     console.log(selectedRow);
   }
-  
+
   const selectRow = {
       mode: 'radio',
       clickToSelect: true,

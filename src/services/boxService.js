@@ -1,36 +1,40 @@
 import http from "../services/http-common";
 
-const getAll = () => {
-	return http.get("/boxes/all");
+const HOST = "http://localhost:8080"
+const DELIVERY_SERVICE_BASE_URL = HOST + "/api/ds"
+const BOX_BASE_URL = DELIVERY_SERVICE_BASE_URL + "/boxes";
+
+const getAllBoxes = () => {
+	return http.get(BOX_BASE_URL + "/all");
 };
 
-const get = (id) => {
-	return http.get(`/boxes/${id}`);
+const getBoxById = (id) => {
+	return http.get(BOX_BASE_URL + `/${id}`);
 };
 
-const getByDelivererId = (delivererId) => {
-	return http.get(`/deliverer/${delivererId}`);
+const getBoxByDelivererId = (delivererId) => {
+	return http.get(BOX_BASE_URL + `/deliverer/${delivererId}`);
 };
 
-const create = (data) => {
-	return http.post("/boxes", data);
+const createBox = (data) => {
+	return http.post(BOX_BASE_URL, data);
 };
 
-const update = (id, data) => {
-	return http.put(`/boxes/${id}`, data);
+const updateBox = (id, data) => {
+	return http.put(BOX_BASE_URL + `/${id}`, data);
 };
 
-const remove = (id) => {
-	return http.delete(`/boxes/${id}`);
+const deleteBox = (id) => {
+	return http.delete(BOX_BASE_URL + `/${id}`);
 };
 
 const boxService = {
-	getAll,
-	get,
-	create,
-	update,
-	remove,
-	getByDelivererId,
+	getAllBoxes,
+	getBoxById,
+	getBoxByDelivererId,
+	createBox,
+	updateBox,
+	deleteBox
 };
 
 export default boxService;
