@@ -13,30 +13,26 @@ import {Footer} from "./layout/Footer";
 import {Container, Row, Col} from "react-bootstrap";
 
 function App() {
-  const yarrak = {
-  }
 
   return (
     <div className="App">
-
       <Router>
-
         <Switch>
           {/* Public Routes - accessible without credentials */}
           <Route exact path="/">
             <LoginView />
           </Route>
 
-          <div className={yarrak}>
+          <div>
             <Header/>
 
             {/* Secure Routes - accessible only for logged in user */}
               <Container fluid>
                 <Row>
-                  <Col xs={4} style={{paddingLeft: 0}}>
+                  <Col xs={3} style={{paddingLeft: 0, marginRight: 0, paddingRight: 0}}>
                     <Sidebar/>
                   </Col>
-                  <Col xs={8}>
+                  <Col xs={9} style={{display: "flex", justifyContent: "center"}}>
                     <SecureRoute exact path="/dashboard">
                       <DashboardView />
                     </SecureRoute>

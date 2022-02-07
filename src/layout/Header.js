@@ -4,16 +4,16 @@ import { useHistory } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShippingFast } from '@fortawesome/free-solid-svg-icons'
+import {logout} from "../api/userApi";
 
-import { userLogout } from "../api/userApi";
 
 export const Header = () => {
   const history = useHistory();
 
   const logMeOut = () => {
-    sessionStorage.removeItem("jwToken");
+      localStorage.removeItem("jwToken");
     localStorage.removeItem("aseDelivery");
-    userLogout();
+    logout()
     history.push("/");
   };
 

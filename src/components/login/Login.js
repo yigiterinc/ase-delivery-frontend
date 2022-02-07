@@ -13,8 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 
 import { loginPending, loginSuccess, loginFail } from "../../store/slices/loginSlice";
-import { userLogin } from "../../api/userApi";
 import { getUserProfile } from "../../store/actions/userAction";
+import {fetchRoleByToken, login} from "../../services/userService";
 
 export const LoginForm = ({ formSwitcher }) => {
 	const dispatch = useDispatch();
@@ -25,11 +25,11 @@ export const LoginForm = ({ formSwitcher }) => {
 	let { from } = location.state || { from: { pathname: "/" } };
 
 	useEffect(() => {
-		sessionStorage.getItem("jwToken") && history.replace(from);
+		localStorage.getItem("jwToken") && history.replace(from);
 	}, [history, isAuth]);
 
-	const [email, setEmail] = useState("eve.holt@reqres.in");
-	const [password, setPassword] = useState("cityslicka");
+	const [email, setEmail] = useState("yigit.erinc@tum.de");
+	const [password, setPassword] = useState("test123");
 
 	const handleOnChange = e => {
 		const { name, value } = e.target;
@@ -58,10 +58,14 @@ export const LoginForm = ({ formSwitcher }) => {
 		dispatch(loginPending());
 
 		try {
-			const isAuth = await userLogin({ email, password });
+			const token = await login({ email, password });
+			const role = await fetchRoleByToken(token)
 
-			if (isAuth.status === "error") {
-				return dispatch(loginFail(isAuth.message));
+			localStorage.setItem("jwToken", token);
+			localStorage.setItem("ROLE", role)
+
+			if (token.status === "error") {
+				return dispatch(loginFail("LOGIN FAILED", token));
 			}
 
 			dispatch(loginSuccess());

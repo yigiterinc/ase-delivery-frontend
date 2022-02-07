@@ -46,7 +46,7 @@ function ElementListing(props) {
   };
 
   return(
-      <Card bg='dark' text='white'>
+      <Card bg='dark' text='white' style={{marginTop: "4vh", width: "70vw", height: 'auto'}}>
         <Card.Header className="container-fluid">
           <Row>
             <Col className="md-10">

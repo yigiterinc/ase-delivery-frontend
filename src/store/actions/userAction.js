@@ -1,5 +1,5 @@
 import { getUserPending, getUserSuccess, getUserFail } from "../slices/userSlice";
-import { fetchUser } from "../../api/userApi";
+import {fetchUser} from "../../api/userApi";
 
 export const getUserProfile = () => async (dispatch) => {
   try {

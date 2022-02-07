@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const rootUrl = "https://reqres.in/api/login";
-const loginUrl = rootUrl + "user/login";
-const userProfileUrl = rootUrl + "user";
+const rootUrl = "http://localhost:10789/api/cas";
+const loginUrl = rootUrl + "/login";
+const userProfileUrl = rootUrl + "/users";
 const logoutUrl = rootUrl + "user/logout";
 const newJWToken = rootUrl + "tokens";
 
@@ -14,7 +14,7 @@ export const userLogin = (frmData) => {
       resolve(res.data);
 
       if (res.data.status === "success") {
-        sessionStorage.setItem("jwToken", res.data.jwToken);
+        localStorage.setItem("jwToken", res.data.jwToken);
         localStorage.setItem(
           "aseDelivery",
           JSON.stringify({ refreshToken: res.data.refreshToken })
@@ -29,7 +29,7 @@ export const userLogin = (frmData) => {
 export const fetchUser = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const jwToken = sessionStorage.getItem("jwToken");
+      const jwToken = localStorage.getItem("jwToken");
 
       if (!jwToken) {
         reject("Token Not Found!");
@@ -65,7 +65,7 @@ export const fetchJWT = () => {
       });
 
       if (res.data.status === "success") {
-        sessionStorage.setItem("jwToken", res.data.jwToken);
+        localStorage.setItem("jwToken", res.data.jwToken);
       }
 
       resolve(true);
@@ -79,13 +79,10 @@ export const fetchJWT = () => {
   });
 };
 
-export const userLogout = async () => {
+export const logout = async () => {
   try {
-    await axios.delete(logoutUrl, {
-      headers: {
-        Authorization: sessionStorage.getItem("jwToken"),
-      },
-    });
+    localStorage.removeItem("jwToken");
+    localStorage.removeItem("ROLE")
   } catch (error) {
     console.log(error);
   }
