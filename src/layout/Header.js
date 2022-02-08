@@ -23,9 +23,9 @@ export const Header = () => {
             <Nav.Link>Dashboard</Nav.Link>
           </LinkContainer>
 
-          <Nav.Link onClick={() => {
+          <Nav.Link onClick={()  => {
               dispatch(userActions.logout());
-              history.push("/")}
+          }
           }>Logout</Nav.Link>
         </Nav>
       </Navbar.Collapse>

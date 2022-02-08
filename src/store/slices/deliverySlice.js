@@ -9,9 +9,9 @@ export const createDelivery = createAsyncThunk(
     const res = await DeliveryDataService.createDelivery({
       boxId,
       customerId,
-      delivererId,
-      description,
+      delivererId
     });
+
     return res.data;
   }
 );
@@ -34,7 +34,7 @@ export const getDeliveries = createAsyncThunk(
 
 export const getActiveDeliveriesByCustomerId = createAsyncThunk(
   "deliveries/getActiveDeliveriesOfCustomer",
-  async ({ customerId }) => {
+  async (customerId) => {
     const res = await DeliveryDataService.getActiveDeliveriesOfCustomer(
       customerId
     );
@@ -102,7 +102,7 @@ const deliverySlice = createSlice({
       return [...action.payload];
     },
     [getActiveDeliveriesByCustomerId.fulfilled]: (state, action) => {
-      return [...action.payload];
+        return [...action.payload];
     },
     [getPastDeliveriesByCustomerId.fulfilled]: (state, action) => {
       return [...action.payload];
@@ -147,4 +147,4 @@ const deliverySlice = createSlice({
 
 const { reducer, actions } = deliverySlice;
 
-export default reducer;
+export default deliverySlice.reducer;

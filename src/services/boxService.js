@@ -1,7 +1,6 @@
 import http from "../services/http-common";
 
-const HOST = "http://localhost:8080"
-const DELIVERY_SERVICE_BASE_URL = HOST + "/api/ds"
+const DELIVERY_SERVICE_BASE_URL = "/ds"
 const BOX_BASE_URL = DELIVERY_SERVICE_BASE_URL + "/boxes";
 
 const getAllBoxes = () => {

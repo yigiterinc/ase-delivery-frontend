@@ -1,19 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import loginReducer from "./slices/loginSlice";
-import userReducer from "./slices/userSlice";
 import boxReducer from "./slices/boxSlice";
+import deliveryReducer from './slices/deliverySlice'
 
 const reducer = {
 	login: loginReducer,
-	user: userReducer,
 	box: boxReducer,
+	delivery: deliveryReducer
 }
 
 const store = configureStore({
 	reducer: reducer,
   	devTools: true,
-	
 });
 
 export default store;

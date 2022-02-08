@@ -1,8 +1,12 @@
 import axios from "axios";
+import {authHeader} from "../helpers";
 
-export default axios.create({
-	baseURL: "http://localhost:8080/api/ds",
+const client = axios.create({
+	baseURL: "http://localhost:10789/api",
 	headers: {
 		"Content-type": "application/json",
+		"Authorization": authHeader(),
 	},
 });
+
+export default client;

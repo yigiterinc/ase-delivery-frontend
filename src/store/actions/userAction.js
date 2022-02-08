@@ -29,5 +29,6 @@ function login(email, password) {
 
 function logout() {
     logoutUser()
+    history.push("/")
     return { type: "LOGOUT" };
 }

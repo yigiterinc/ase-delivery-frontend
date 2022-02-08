@@ -1,8 +1,6 @@
 import http from "../services/http-common";
-import axios from "axios";
 
-const HOST = "http://localhost:10789";
-const CUSTOMER_AUTHENTICATION_SERVICE_BASE_URL = HOST + "/api/cas";
+const CUSTOMER_AUTHENTICATION_SERVICE_BASE_URL = "/cas";
 const USER_BASE_URL = CUSTOMER_AUTHENTICATION_SERVICE_BASE_URL + "/users";
 const LOGIN_URL = CUSTOMER_AUTHENTICATION_SERVICE_BASE_URL + "/login"
 const FETCH_ROLE_URL = USER_BASE_URL + "/role";
@@ -44,17 +42,18 @@ export const loginUser = async (email, password) => {
 
   console.log(loginDto)
 
-  const tokenReq = await axios.post(LOGIN_URL, loginDto);
+  const tokenReq = await http.post(LOGIN_URL, loginDto);
   const token = tokenReq.data
   const user = await fetchUser(token);
   user.token = token;
 
   localStorage.setItem('user', JSON.stringify(user));
+
   return user;
 };
 
 export const fetchRoleByToken = async (token) => {
-  const res = await axios.get(FETCH_ROLE_URL, {
+  const res = await http.get(FETCH_ROLE_URL, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -69,7 +68,7 @@ const fetchUser = (jwt) => {
         reject("Token Not Found!");
       }
 
-      const res = await axios.get(`${USER_BASE_URL}/token/${jwt}` );
+      const res = await http.get(`${USER_BASE_URL}/token/${jwt}` );
 
       resolve(res.data);
     } catch (error) {

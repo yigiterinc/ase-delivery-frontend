@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Card, Button, Row, Col, Modal, Form} from "react-bootstrap";
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
@@ -11,9 +11,10 @@ function ElementListing(props) {
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [selectedRow, setSelectedRow] = useState();
+
   
   const createForm = (array) => {
-    if(array.length > 0){
+    if (array.length > 0) {
       return(
         array.map(function(each){
           const placeholder = 'Enter ' + each.text;
@@ -45,7 +46,7 @@ function ElementListing(props) {
       onSelect: handleOnSelect
   };
 
-  return(
+  return (
       <Card bg='dark' text='white' style={{marginTop: "4vh", width: "70vw", height: 'auto'}}>
         <Card.Header className="container-fluid">
           <Row>
@@ -109,25 +110,25 @@ function ElementListing(props) {
           </Row>            
         </Card.Header>
         <Card.Body>
-          <div className="table-responsive">
-            <BootstrapTable
-              striped
-              hover
-              bordered={false}
-              bootstrap4
-              keyField='ID'
-              data={ props.table.data }
-              columns={ props.table.columns }
-              selectRow={ selectRow }
-              cellEdit={ cellEditFactory({ 
-                mode: 'dbclick',
-                // ToDo: Save modified entry to database
-                afterSaveCell: (oldValue, newValue, row, column) => { console.log('After Saving Cell!!'); }
-              }) }
-              classes="table-dark"
-              condensed
-            />
-          </div>
+            <div className="table-responsive">
+              <BootstrapTable
+                  striped
+                  hover
+                  bordered={false}
+                  bootstrap4
+                  keyField='ID'
+                  data={ props.table.data }
+                  columns={ props.table.columns }
+                  selectRow={ selectRow }
+                  cellEdit={ cellEditFactory({
+                    mode: 'dbclick',
+                    // ToDo: Save modified entry to database
+                    afterSaveCell: (oldValue, newValue, row, column) => { console.log('After Saving Cell!!'); }
+                  }) }
+                  classes="table-dark"
+                  condensed
+              />
+            </div>
         </Card.Body>
       </Card>
   );

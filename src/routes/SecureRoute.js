@@ -1,13 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
-import { loginSuccess } from "../store/slices/loginSlice";
-import {getLoggedInUser, getUserProfile} from "../store/actions/userAction";
-
-import { fetchJWT } from "../api/userApi";
 
 export const SecureRoute = ({ children, allowedRoles, ...rest }) => {
-	const dispatch = useDispatch();
 
 	return (
 		<Route
