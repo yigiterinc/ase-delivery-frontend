@@ -1,29 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  isLoading: false,
-  isAuth: false,
-  error: "",
-};
+
+let user = JSON.parse(localStorage.getItem('user'));
+const initialState = user ? { loggedIn: true, user } : { error: "" };
 
 const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
-    loginPending: (state) => {
-      state.isLoading = true;
-    },
-    loginSuccess: (state) => {
-      state.isLoading = false;
-      state.isAuth = true;
-      state.error = "";
-    },
-    loginFail: (state, { payload }) => {
-      state.isLoading = false;
-      state.error = payload;
-    },
-  },
-});
+    authentication(state = initialState, action) {
+      switch (action.type) {
+        case "LOGIN_PENDING":
+          return {
+            loggingIn: true,
+            user: action.user
+          };
+        case "LOGIN_SUCCESS":
+          return {
+            loggedIn: true,
+            user: action.user
+          };
+        case "LOGIN_FAILURE":
+          return {
+            error: action.error
+          };
+        case "LOGOUT":
+          return {};
+        default:
+          return state
+      }
+    }
+  }
+})
 
 const { reducer, actions } = loginSlice;
 

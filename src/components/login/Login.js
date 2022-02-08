@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import PropTypes from "prop-types";
 import {
 	Container,
@@ -9,27 +9,45 @@ import {
 	Spinner,
 	Alert,
 } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory, useLocation} from "react-router-dom";
 
-import { loginPending, loginSuccess, loginFail } from "../../store/slices/loginSlice";
-import { getUserProfile } from "../../store/actions/userAction";
-import {fetchRoleByToken, login} from "../../services/userService";
+import {getLoggedInUser, userActions} from "../../store/actions/userAction";
 
 export const LoginForm = ({ formSwitcher }) => {
 	const dispatch = useDispatch();
-	const history = useHistory();
+
 	let location = useLocation();
 
-	const { isLoading, isAuth, error } = useSelector(state => state.login);
+	const history = useHistory();
+
+	const [loggedInUser, setLoggedInUser] = useState(null);
+	const [email, setEmail] = useState("yigit.erinc@tum.de");
+	const [password, setPassword] = useState("test123");
+
 	let { from } = location.state || { from: { pathname: "/" } };
 
 	useEffect(() => {
-		localStorage.getItem("jwToken") && history.replace(from);
-	}, [history, isAuth]);
+		if (loggedInUser) {
+			history.push("/dashboard")
+			return;
+		}
 
-	const [email, setEmail] = useState("yigit.erinc@tum.de");
-	const [password, setPassword] = useState("test123");
+		window.addEventListener('storage', storageEventHandler, false);
+	}, [loggedInUser]);
+
+
+	useEffect(() => {
+		console.log('hello')
+		if (loggedInUser) {
+			history.push("/dashboard")
+		}
+	}, [location.pathname])
+
+	function storageEventHandler() {
+		console.log("hi from storageEventHandler")
+		setLoggedInUser(localStorage.getItem('user') || null)
+	}
 
 	const handleOnChange = e => {
 		const { name, value } = e.target;
@@ -55,25 +73,7 @@ export const LoginForm = ({ formSwitcher }) => {
 			return alert("Email and Password required!");
 		}
 
-		dispatch(loginPending());
-
-		try {
-			const token = await login({ email, password });
-			const role = await fetchRoleByToken(token)
-
-			localStorage.setItem("jwToken", token);
-			localStorage.setItem("ROLE", role)
-
-			if (token.status === "error") {
-				return dispatch(loginFail("LOGIN FAILED", token));
-			}
-
-			dispatch(loginSuccess());
-			dispatch(getUserProfile());
-			history.push("/dashboard");
-		} catch (error) {
-			dispatch(loginFail(error.message));
-		}
+		dispatch(userActions.login(email, password));
 	};
 
 	return (
@@ -104,10 +104,11 @@ export const LoginForm = ({ formSwitcher }) => {
 								required
 							/>
 						</Form.Group>
-						{error && <Alert variant="danger">{error}</Alert>}
+						{/* {error && <Alert variant="danger">{error}</Alert>} */}
 						<div className="text-center" >
-							<Button type="submit">Login</Button></div>
-						{isLoading && <Spinner variant="primary" animation="border" />}
+							<Button type="submit">Login</Button>
+						</div>
+						{/* {isLoading && <Spinner variant="primary" animation="border" />} */}
 					</Form>
 				</Col>
 			</Row>

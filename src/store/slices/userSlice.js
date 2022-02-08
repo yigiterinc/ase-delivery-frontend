@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import UserDataService from "../../services/userService";
+import {useHistory} from "react-router-dom";
 
 const initialState = {
   user: {},

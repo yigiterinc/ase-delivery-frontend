@@ -26,20 +26,14 @@ export const userLogin = (frmData) => {
   });
 };
 
-export const fetchUser = () => {
+export const fetchUser = (jwt) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const jwToken = localStorage.getItem("jwToken");
-
-      if (!jwToken) {
+      if (!jwt) {
         reject("Token Not Found!");
       }
 
-      const res = await axios.get(userProfileUrl, {
-        headers: {
-          Authorization: jwToken,
-        },
-      });
+      const res = await axios.get(`${userProfileUrl}/token/${jwt}`);
 
       resolve(res.data);
     } catch (error) {
@@ -77,13 +71,4 @@ export const fetchJWT = () => {
       reject(false);
     }
   });
-};
-
-export const logout = async () => {
-  try {
-    localStorage.removeItem("jwToken");
-    localStorage.removeItem("ROLE")
-  } catch (error) {
-    console.log(error);
-  }
 };

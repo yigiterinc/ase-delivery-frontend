@@ -4,18 +4,12 @@ import { useHistory } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShippingFast } from '@fortawesome/free-solid-svg-icons'
-import {logout} from "../api/userApi";
-
+import {userActions} from "../store/actions/userAction";
+import {useDispatch} from "react-redux";
 
 export const Header = () => {
-  const history = useHistory();
-
-  const logMeOut = () => {
-      localStorage.removeItem("jwToken");
-    localStorage.removeItem("aseDelivery");
-    logout()
-    history.push("/");
-  };
+    const dispatch = useDispatch();
+    const history = useHistory();
 
   return (
     <Navbar collapseOnSelect bg="info" variant="dark" expand="md">
@@ -29,7 +23,10 @@ export const Header = () => {
             <Nav.Link>Dashboard</Nav.Link>
           </LinkContainer>
 
-          <Nav.Link onClick={logMeOut}>Logout</Nav.Link>
+          <Nav.Link onClick={() => {
+              dispatch(userActions.logout());
+              history.push("/")}
+          }>Logout</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

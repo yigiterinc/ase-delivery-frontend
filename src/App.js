@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import {history} from './helpers.js';
+
 import { DashboardView } from "./views/dashboard/DashboardView";
 import { LoginView } from "./views/login/LoginView";
 import { SecureRoute } from "./routes/SecureRoute";
@@ -16,7 +18,7 @@ function App() {
 
   return (
     <div className="App">
-      <Router>
+      <Router history={history}>
         <Switch>
           {/* Public Routes - accessible without credentials */}
           <Route exact path="/">
@@ -33,19 +35,19 @@ function App() {
                     <Sidebar/>
                   </Col>
                   <Col xs={9} style={{display: "flex", justifyContent: "center"}}>
-                    <SecureRoute exact path="/dashboard">
+                    <SecureRoute exact path="/dashboard" allowedRoles={["CUSTOMER", "DELIVERER", "DISPATCHER"]}>
                       <DashboardView />
                     </SecureRoute>
 
-                    <SecureRoute exact path="/users">
+                    <SecureRoute exact path="/users" allowedRoles={["DISPATCHER"]}>
                       <Users/>
                     </SecureRoute>
 
-                    <SecureRoute exact path="/deliveries">
+                    <SecureRoute exact path="/deliveries" allowedRoles={["CUSTOMER", "DELIVERER", "DISPATCHER"]}>
                       <Deliveries/>
                     </SecureRoute>
 
-                    <SecureRoute exact path="/boxes">
+                    <SecureRoute exact path="/boxes" allowedRoles={["DISPATCHER"]}>
                       <Boxes/>
                     </SecureRoute>
                   </Col>

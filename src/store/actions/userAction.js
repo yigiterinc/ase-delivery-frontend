@@ -1,17 +1,33 @@
-import { getUserPending, getUserSuccess, getUserFail } from "../slices/userSlice";
-import {fetchUser} from "../../api/userApi";
+import { history } from "../../helpers";
+import {loginUser, logoutUser} from "../../services/userService";
 
-export const getUserProfile = () => async (dispatch) => {
-  try {
-    dispatch(getUserPending());
-
-    const result = await fetchUser();
-
-    if (result.user && result.user._id)
-      return dispatch(getUserSuccess(result.user));
-
-    dispatch(getUserFail("User Not Found!"));
-  } catch (error) {
-    dispatch(getUserFail(error));
-  }
+export const userActions = {
+  login,
+  logout,
 };
+
+function login(email, password) {
+  return dispatch => {
+    dispatch(request({ email }));
+
+    loginUser(email, password)
+        .then(
+            user => {
+              dispatch(success(user));
+              history.push('/dashboard');
+            },
+            error => {
+              dispatch(failure(error));
+            }
+        );
+  };
+
+  function request(user) { return { type: "LOGIN_PENDING", user } }
+  function success(user) { return { type: "LOGIN_SUCCESS", user } }
+  function failure(error) { return { type: "LOGIN_FAILURE", error } }
+}
+
+function logout() {
+    logoutUser()
+    return { type: "LOGOUT" };
+}

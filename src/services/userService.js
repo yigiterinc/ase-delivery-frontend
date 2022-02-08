@@ -36,27 +36,21 @@ const userService = {
   deleteUser
 };
 
-export const login = ({email, password}) => {
+export const loginUser = async (email, password) => {
   let loginDto = {
     email,
     password
   }
 
-  return new Promise(async (resolve, reject) => {
-    try {
-      const res = await axios.post(LOGIN_URL, loginDto);
+  console.log(loginDto)
 
-      resolve(res.data);
+  const tokenReq = await axios.post(LOGIN_URL, loginDto);
+  const token = tokenReq.data
+  const user = await fetchUser(token);
+  user.token = token;
 
-      console.log(res)
-
-      if (res.data.status === "success") {
-        return res.data;
-      }
-    } catch (error) {
-      reject(error);
-    }
-  });
+  localStorage.setItem('user', JSON.stringify(user));
+  return user;
 };
 
 export const fetchRoleByToken = async (token) => {
@@ -68,20 +62,14 @@ export const fetchRoleByToken = async (token) => {
   return res.data;
 }
 
-export const fetchUser = () => {
+const fetchUser = (jwt) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const jwToken = localStorage.getItem("jwToken");
-
-      if (!jwToken) {
+      if (!jwt) {
         reject("Token Not Found!");
       }
 
-      const res = await axios.get(USER_BASE_URL, {
-        headers: {
-          Authorization: jwToken,
-        },
-      });
+      const res = await axios.get(`${USER_BASE_URL}/token/${jwt}` );
 
       resolve(res.data);
     } catch (error) {
@@ -90,5 +78,9 @@ export const fetchUser = () => {
     }
   });
 };
+
+export const logoutUser = () => {
+  localStorage.removeItem('user');
+}
 
 export default userService;

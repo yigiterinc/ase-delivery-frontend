@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ElementListing from "./dashboard/ElementListing";
 
 function Boxes() {
@@ -11,6 +11,12 @@ function Boxes() {
     ],
     data: [{ ID: "Box1", Name: "BoxName1", Address: "BoxAddress1" }],
   };
+
+
+  useEffect(() => {
+    console.log(JSON.parse(localStorage.getItem('user')))
+  }, []);
+
 
   const handleCreateBox = () => {
     console.log("creating box");
