@@ -1,7 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import BoxDataService from "../../services/boxService";
 
-const initialState = [];
+const initialState = {
+  boxes: [],
+  delivererAssignedBoxes: [],
+};
 
 export const createBox = createAsyncThunk(
   "boxes/create",
@@ -40,8 +43,8 @@ export const deleteBox = createAsyncThunk(
 
 export const getBoxByDelivererId = createAsyncThunk(
   "boxes/getByDelivererId",
-  async ({ delivererId }) => {
-    const res = await BoxDataService.getBoxByDelivererId(delivererId);
+  async ({ id }) => {
+    const res = await BoxDataService.getBoxByDelivererId(id);
     return res.data;
   }
 );
@@ -54,7 +57,10 @@ const boxSlice = createSlice({
       state.push(action.payload);
     },
     [getBoxes.fulfilled]: (state, action) => {
-      return [...action.payload];
+      return {
+        ...state,
+        boxes: action.payload,
+      };
     },
     [updateBox.fulfilled]: (state, action) => {
       const index = state.findIndex((box) => box.id === action.payload.id);
@@ -68,7 +74,10 @@ const boxSlice = createSlice({
       state.splice(index, 1);
     },
     [getBoxByDelivererId.fulfilled]: (state, action) => {
-      return [...action.payload];
+      return {
+        ...state,
+        delivererAssignedBoxes: action.payload,
+      };
     },
     [getBox.fulfilled]: (state, action) => {
       return [...action.payload];

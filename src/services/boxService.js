@@ -11,8 +11,9 @@ const getBoxById = ({ id }) => {
   return http.get(BOX_BASE_URL + `/${id}`);
 };
 
-const getBoxByDelivererId = ({ delivererId }) => {
-  return http.get(BOX_BASE_URL + `/deliverer/${delivererId}`);
+const getBoxByDelivererId = (id) => {
+  console.log("here:", id);
+  return http.get(BOX_BASE_URL + `/deliverer/${id}`);
 };
 
 const createBox = (data) => {

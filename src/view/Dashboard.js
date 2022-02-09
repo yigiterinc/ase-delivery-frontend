@@ -42,7 +42,7 @@ const Dashboard = (props) => {
     } else if (userRole === "DELIVERER") {
       return (
         <>
-          <BoxTable />
+          <BoxTable assignedBoxes />
         </>
       );
     } else {

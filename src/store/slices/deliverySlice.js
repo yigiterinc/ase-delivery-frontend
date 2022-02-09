@@ -53,6 +53,14 @@ export const getPastDeliveriesByCustomerId = createAsyncThunk(
   }
 );
 
+export const getDeliveriesAssignedToDeliverer = createAsyncThunk(
+  "deliveries/getDeliveriesOfDeliverer",
+  async ({ id }) => {
+    const res = await getDeliveriesAssignedToDeliverer(id);
+    return res.data;
+  }
+);
+
 export const onDeliveriesCollected = createAsyncThunk(
   "deliveries/onDeliveriesCollected",
   async ({ ids, delivererId }) => {
