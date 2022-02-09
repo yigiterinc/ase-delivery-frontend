@@ -61,7 +61,7 @@ export const fetchRoleByToken = async (token) => {
   return res.data;
 }
 
-const fetchUser = (jwt) => {
+export const fetchUser = (jwt) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (!jwt) {

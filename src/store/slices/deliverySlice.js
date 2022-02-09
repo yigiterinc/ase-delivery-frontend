@@ -1,15 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import DeliveryDataService from "../../services/deliveryService";
 
-const initialState = [];
+const initialState = {
+  allDeliveries: [],
+  userActiveDeliveries: [],
+  userPastDeliveries: [],
+  delivererAssignedDeliveries: [],
+};
 
 export const createDelivery = createAsyncThunk(
   "deliveries/createDelivery",
-  async ({ boxId, customerId, delivererId, description }) => {
+  async ({ boxId, customerId, delivererId }) => {
     const res = await DeliveryDataService.createDelivery({
       boxId,
       customerId,
-      delivererId
+      delivererId,
     });
 
     return res.data;
@@ -34,20 +39,16 @@ export const getDeliveries = createAsyncThunk(
 
 export const getActiveDeliveriesByCustomerId = createAsyncThunk(
   "deliveries/getActiveDeliveriesOfCustomer",
-  async (customerId) => {
-    const res = await DeliveryDataService.getActiveDeliveriesOfCustomer(
-      customerId
-    );
+  async ({ id }) => {
+    const res = await DeliveryDataService.getActiveDeliveriesOfCustomer(id);
     return res.data;
   }
 );
 
 export const getPastDeliveriesByCustomerId = createAsyncThunk(
   "deliveries/getPastDeliveriesOfCustomer",
-  async ({ customerId }) => {
-    const res = await DeliveryDataService.getPastDeliveriesOfCustomer(
-      customerId
-    );
+  async ({ id }) => {
+    const res = await DeliveryDataService.getPastDeliveriesOfCustomer(id);
     return res.data;
   }
 );
@@ -74,10 +75,7 @@ export const onDeliveryDeposited = createAsyncThunk(
 export const onDeliveryDelivered = createAsyncThunk(
   "deliveries/onDeliveryDelivered",
   async ({ userId, boxId }) => {
-    const res = await DeliveryDataService.onDeliveryDelivered(
-      userId,
-      boxId
-    );
+    const res = await DeliveryDataService.onDeliveryDelivered(userId, boxId);
     return res.data;
   }
 );
@@ -90,7 +88,6 @@ export const deleteDelivery = createAsyncThunk(
   }
 );
 
-
 const deliverySlice = createSlice({
   name: "deliveries",
   initialState,
@@ -99,13 +96,22 @@ const deliverySlice = createSlice({
       state.push(action.payload);
     },
     [getDeliveries.fulfilled]: (state, action) => {
-      return [...action.payload];
+      return {
+        ...state,
+        allDeliveries: action.payload,
+      };
     },
     [getActiveDeliveriesByCustomerId.fulfilled]: (state, action) => {
-        return [...action.payload];
+      return {
+        ...state,
+        userActiveDeliveries: action.payload,
+      };
     },
     [getPastDeliveriesByCustomerId.fulfilled]: (state, action) => {
-      return [...action.payload];
+      return {
+        ...state,
+        userPastDeliveries: action.payload,
+      };
     },
     [onDeliveriesCollected.fulfilled]: (state, action) => {
       const index = state.findIndex(

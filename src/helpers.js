@@ -1,14 +1,10 @@
-import { createBrowserHistory } from 'history';
-
 export function authHeader() {
-    // return authorization header with jwt token
-    let user = JSON.parse(localStorage.getItem('user'));
+  // return authorization header with jwt token
+  let user = JSON.parse(localStorage.getItem("user"));
 
-    if (user && user.token) {
-        return `Bearer ${user.token}`;
-    } else {
-        return {};
-    }
+  if (user && user.token) {
+    return `Bearer ${user.token}`;
+  } else {
+    return {};
+  }
 }
-
-export const history = createBrowserHistory();
