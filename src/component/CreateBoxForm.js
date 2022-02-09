@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { createBox, getBoxes } from "../store/slices/boxSlice";
 
 function CreateBoxForm(props) {
   const [name, setName] = useState();
   const [address, setAddress] = useState();
+
+  const dispatch = useDispatch();
 
   const onCreateBox = () => {
     if (!(name && address)) {
@@ -15,8 +19,11 @@ function CreateBoxForm(props) {
       stationAddress: address,
     };
 
-    console.log(data);
+    dispatch(createBox(data));
+    dispatch(getBoxes());
+
     props.setShowCreateModal(false);
+    props.setUpdatePerformed(true);
   };
 
   return (

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import MaterialTable, { MTableToolbar } from "material-table";
 import { deleteBox, getBoxes } from "../store/slices/boxSlice";
-import { Button } from "@material-ui/core";
 import CreateBoxForm from "./CreateBoxForm";
 import BaseModal from "./BaseModal";
 
@@ -12,17 +11,20 @@ const BoxTable = (props) => {
 
   const [boxData, setBoxData] = useState();
 
+  const [updatePerformed, setUpdatePerformed] = useState(false);
+
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(async () => {
-    if (boxes && !boxData) {
+    if ((boxes && !boxData) || updatePerformed) {
       await dispatch(getBoxes());
       console.log(boxes);
       if (boxes) {
         setBoxData(boxes);
       }
+      setUpdatePerformed(false);
     }
-  }, [boxes]);
+  }, [boxes, updatePerformed]);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -43,7 +45,10 @@ const BoxTable = (props) => {
   const CreateBoxModal = (props) => {
     return (
       <BaseModal {...props}>
-        <CreateBoxForm setShowCreateModal={setShowCreateModal} />
+        <CreateBoxForm
+          setShowCreateModal={setShowCreateModal}
+          setUpdatePerformed={setUpdatePerformed}
+        />
       </BaseModal>
     );
   };
@@ -65,7 +70,7 @@ const BoxTable = (props) => {
             data={boxData}
             title={"Boxes"}
             actions={
-              JSON.parse(localStorage.getItem("user")).role === "DELIVERER"
+              user.role === "DISPATCHER"
                 ? [
                     {
                       icon: "add",
