@@ -6,7 +6,6 @@ import axiosRetry from "axios-retry";
 const client = axios.create({
   baseURL: "http://localhost:10789/api",
   headers: {
-    "Content-type": "application/json",
     Authorization: authHeader(),
   },
 });

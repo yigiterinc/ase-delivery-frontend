@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getActiveDeliveriesByCustomerId } from "../store/slices/deliverySlice";
 import MaterialTable from "material-table";
-import { getAllUsers } from "../store/slices/userSlice";
+import { getAllUsers, deleteUser } from "../store/slices/userSlice";
+import { updateBox } from "../store/slices/boxSlice";
 
 const UserTable = (props) => {
   const dispatch = useDispatch();
@@ -10,26 +11,27 @@ const UserTable = (props) => {
 
   const [tableShown, setTableShown] = useState(false);
   const [userData, setUserData] = useState();
-  //const [deliveryTable, setDeliveryTable] = useState(null);
+  const [updatePerformed, setUpdatePerformed] = useState();
 
   useEffect(async () => {
-    if (users && !tableShown) {
+    if (updatePerformed || (!userData && !tableShown)) {
       await dispatch(getAllUsers());
       console.log(users);
       setUserData(users);
       setTableShown(true);
+      setUpdatePerformed(false);
     }
-  }, [users, tableShown]);
+  }, [users, tableShown, userData, updatePerformed]);
 
   const columns = [
-    { field: "id", title: "ID" },
+    { field: "id", title: "ID", editable: "never" },
     { field: "email", title: "Email" },
     { field: "role", title: "Role" },
     { field: "rfid", title: "RFID" },
   ];
 
   return (
-    tableShown && (
+    users && (
       <div
         style={{
           display: "flex",
@@ -56,9 +58,11 @@ const UserTable = (props) => {
           editable={{
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
-                setTimeout(() => {
+                setTimeout(async () => {
                   const dataUpdate = [...userData];
                   const index = oldData.tableData.id;
+                  const idToUpdate = oldData.id;
+                  //await dispatch(updateUser({ id: idToUpdate, data: newData }));
                   dataUpdate[index] = newData;
                   setUserData([...dataUpdate]);
                   console.log(oldData);
@@ -68,12 +72,14 @@ const UserTable = (props) => {
               }),
             onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
-                setTimeout(() => {
+                setTimeout(async () => {
                   const dataDelete = [...userData];
                   const index = oldData.tableData.id;
+                  const idToDelete = oldData.id;
+                  await dispatch(deleteUser({ id: idToDelete }));
                   dataDelete.splice(index, 1);
                   setUserData([...dataDelete]);
-
+                  setUpdatePerformed(true);
                   resolve();
                 }, 1000);
               }),

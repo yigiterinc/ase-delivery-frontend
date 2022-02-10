@@ -5,6 +5,7 @@ import {
   deleteBox,
   getBoxByDelivererId,
   getBoxes,
+  updateBox,
 } from "../store/slices/boxSlice";
 import { onDeliveriesCollected } from "../store/slices/deliverySlice";
 import CreateBoxForm from "./CreateBoxForm";
@@ -26,7 +27,6 @@ const BoxTable = (props) => {
   const [updatePerformed, setUpdatePerformed] = useState(false);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [boxStatuses, setBoxStatuses] = useState();
 
   useEffect(async () => {
     if (!boxData || updatePerformed) {
@@ -119,7 +119,7 @@ const BoxTable = (props) => {
             title={props.assignedBoxes ? "Assigned Boxes" : "Boxes"}
             localization={{
               header: {
-                actions: "Collect",
+                actions: user.role === "DELIVERER" ? "Collect" : "Actions",
               },
             }}
             actions={
@@ -164,28 +164,38 @@ const BoxTable = (props) => {
                 : {
                     onRowUpdate: (newData, oldData) =>
                       new Promise((resolve, reject) => {
-                        setTimeout(() => {
+                        setTimeout(async () => {
                           const dataUpdate = [...boxData];
                           const index = oldData.tableData.id;
+                          const idToUpdate = oldData.id;
+
+                          await dispatch(
+                            updateBox({
+                              id: idToUpdate,
+                              data: {
+                                id: newData.id,
+                                stationAddress: newData.stationAddress,
+                                stationName: newData.stationName,
+                              },
+                            })
+                          );
                           dataUpdate[index] = newData;
                           setBoxData([...dataUpdate]);
-                          console.log(oldData);
 
                           resolve();
                         }, 1000);
                       }),
                     onRowDelete: (oldData) =>
                       new Promise((resolve, reject) => {
-                        setTimeout(() => {
+                        setTimeout(async () => {
                           const dataDelete = [...boxData];
                           const index = oldData.tableData.id;
                           const idToDelete = oldData.id;
                           console.log(idToDelete);
-                          dispatch(deleteBox({ id: idToDelete })).then(() => {
-                            dispatch(getBoxes());
-                            dataDelete.splice(index, 1);
-                            setBoxData([...dataDelete]);
-                          });
+                          await dispatch(deleteBox({ id: idToDelete }));
+                          dataDelete.splice(index, 1);
+                          setBoxData([...dataDelete]);
+                          setUpdatePerformed(true);
                           resolve();
                         }, 1000);
                       }),

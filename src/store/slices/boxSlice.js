@@ -27,6 +27,7 @@ export const getBoxes = createAsyncThunk("/boxes/all", async () => {
 export const updateBox = createAsyncThunk(
   "boxes/updateById",
   async ({ id, data }) => {
+    console.log(id, data);
     const res = await BoxDataService.updateBox(id, data);
     return res.data;
   }
@@ -54,7 +55,12 @@ const boxSlice = createSlice({
   initialState,
   extraReducers: {
     [createBox.fulfilled]: (state, action) => {
-      state.push(action.payload);
+      const payload = action.payload;
+
+      return {
+        ...state,
+        boxes: state.boxes.concat(action.payload),
+      };
     },
     [getBoxes.fulfilled]: (state, action) => {
       return {
@@ -63,15 +69,20 @@ const boxSlice = createSlice({
       };
     },
     [updateBox.fulfilled]: (state, action) => {
-      const index = state.findIndex((box) => box.id === action.payload.id);
-      state[index] = {
-        ...state[index],
-        ...action.payload,
+      const payload = action.payload;
+
+      return {
+        ...state,
+        boxes: state.boxes.map((box) =>
+          payload.id === box.id ? action.payload : box
+        ),
       };
     },
     [deleteBox.fulfilled]: (state, action) => {
-      let index = state.findIndex(({ id }) => id === action.payload.id);
-      state.splice(index, 1);
+      return {
+        ...state,
+        boxes: [state.boxes.filter((box) => box.id !== action.payload.id)],
+      };
     },
     [getBoxByDelivererId.fulfilled]: (state, action) => {
       return {
@@ -80,7 +91,7 @@ const boxSlice = createSlice({
       };
     },
     [getBox.fulfilled]: (state, action) => {
-      return [...action.payload];
+      return state;
     },
   },
 });

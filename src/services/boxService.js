@@ -19,7 +19,7 @@ const createBox = (data) => {
   return http.post(BOX_BASE_URL, data);
 };
 
-const updateBox = ({ id, data }) => {
+const updateBox = (id, data) => {
   return http.put(BOX_BASE_URL + `/${id}`, data);
 };
 

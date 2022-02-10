@@ -45,7 +45,7 @@ const onDeliveryDelivered = (userId, boxId) => {
 };
 
 const deleteDelivery = (id) => {
-  return http.delete(`/${id}`);
+  return http.delete(`${DELIVERIES_BASE_URL}/${id}`);
 };
 
 const deliveryService = {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  deleteDelivery,
   getActiveDeliveriesByCustomerId,
   getDeliveries,
   getPastDeliveriesByCustomerId,
@@ -66,8 +67,10 @@ const DeliveryTable = (props) => {
     deliveryData,
   ]);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const columns = [
-    { field: "id", title: "ID/Tracking Code" },
+    { field: "id", title: "ID/Tracking Code", editable: "never" },
     { field: "targetPickupBox.id", title: "BoxID" },
     { field: "customerId", title: "CustomerID" },
     { field: "targetPickupBox.stationName", title: "Box Name" },
@@ -108,6 +111,40 @@ const DeliveryTable = (props) => {
               },
             },
           ]}
+          editable={
+            user.role !== "DISPATCHER"
+              ? {}
+              : {
+                  onRowUpdate: (newData, oldData) =>
+                    new Promise((resolve, reject) => {
+                      setTimeout(async () => {
+                        const dataUpdate = [...deliveryData];
+                        const index = oldData.tableData.id;
+                        const idToUpdate = oldData.id;
+
+                        // update Delivery
+                        dataUpdate[index] = newData;
+                        // set delivery data
+
+                        resolve();
+                      }, 1000);
+                    }),
+                  onRowDelete: (oldData) =>
+                    new Promise((resolve, reject) => {
+                      setTimeout(async () => {
+                        const dataDelete = [...deliveryData];
+                        const index = oldData.tableData.id;
+                        const idToDelete = oldData.id;
+                        console.log(idToDelete);
+                        await dispatch(deleteDelivery({ id: idToDelete }));
+                        dataDelete.splice(index, 1);
+                        setDeliveryData([...dataDelete]);
+                        setUpdatePerformed(true);
+                        resolve();
+                      }, 1000);
+                    }),
+                }
+          }
           style={{ width: "90vw" }}
           columns={columns}
           data={deliveryData}

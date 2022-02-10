@@ -157,8 +157,14 @@ const deliverySlice = createSlice({
       };
     },
     [deleteDelivery.fulfilled]: (state, action) => {
-      let index = state.findIndex(({ id }) => id === action.payload.id);
-      state.splice(index, 1);
+      return {
+        ...state,
+        allDeliveries: [
+          state.allDeliveries.filter(
+            (delivery) => delivery.id !== action.payload.id
+          ),
+        ],
+      };
     },
 
     [getDeliverybyId.fulfilled]: (state, action) => {
