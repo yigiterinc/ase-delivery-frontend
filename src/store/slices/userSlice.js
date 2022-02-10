@@ -26,6 +26,15 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "/users/updateUser",
+  async (data) => {
+    console.log(data);
+    const res = await UserDataService.updateUser(data);
+    return res.data;
+  }
+);
+
 export const fetchUser = createAsyncThunk(
   "/users/fetchUser",
   async ({ jwt }) => {
@@ -54,6 +63,13 @@ const userSlice = createSlice({
       console.log(payload);
 
       return [...action.payload];
+    },
+    [updateUser.fulfilled]: (state, action) => {
+      const payload = action.payload;
+
+      return state.map((user) =>
+        payload.id === user.id ? action.payload : user
+      );
     },
   },
 });

@@ -62,6 +62,11 @@ export const fetchRoleByToken = async (token) => {
   return res.data;
 };
 
+export const updateUser = async ({ data }) => {
+  console.log(data);
+  return http.put(USER_BASE_URL, data);
+};
+
 export const fetchUser = (jwt) => {
   return new Promise(async (resolve, reject) => {
     try {

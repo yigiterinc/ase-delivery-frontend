@@ -5,6 +5,7 @@ import {
   getActiveDeliveriesByCustomerId,
   getDeliveries,
   getPastDeliveriesByCustomerId,
+  updateDelivery,
 } from "../store/slices/deliverySlice";
 import MaterialTable from "material-table";
 import BaseModal from "./BaseModal";
@@ -73,8 +74,16 @@ const DeliveryTable = (props) => {
     { field: "id", title: "ID/Tracking Code", editable: "never" },
     { field: "targetPickupBox.id", title: "BoxID" },
     { field: "customerId", title: "CustomerID" },
-    { field: "targetPickupBox.stationName", title: "Box Name" },
-    { field: "targetPickupBox.stationAddress", title: "Box Address" },
+    {
+      field: "targetPickupBox.stationName",
+      title: "Box Name",
+      editable: "never",
+    },
+    {
+      field: "targetPickupBox.stationAddress",
+      title: "Box Address",
+      editable: "never",
+    },
     { field: "delivererId", title: "DelivererID" },
     { field: "deliveryStatus", title: "DeliveryStatus" },
   ];
@@ -121,11 +130,18 @@ const DeliveryTable = (props) => {
                         const dataUpdate = [...deliveryData];
                         const index = oldData.tableData.id;
                         const idToUpdate = oldData.id;
+                        console.log(newData);
+                        const data = {
+                          targetPickupBox: newData.targetPickupBox,
+                          delivererId: newData.delivererId,
+                          customerId: newData.customerId,
+                          deliveryStatus: newData.deliveryStatus,
+                          id: idToUpdate,
+                        };
 
-                        // update Delivery
+                        dispatch(updateDelivery({ data }));
                         dataUpdate[index] = newData;
-                        // set delivery data
-
+                        setDeliveryData([...dataUpdate]);
                         resolve();
                       }, 1000);
                     }),

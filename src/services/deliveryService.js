@@ -16,6 +16,10 @@ const getActiveDeliveriesOfCustomer = (id) => {
   return http.get(DELIVERIES_BASE_URL + `/customer/${id}/status/active`);
 };
 
+const updateDelivery = (data) => {
+  return http.put(DELIVERIES_BASE_URL, data);
+};
+
 const getPastDeliveriesOfCustomer = (id) => {
   return http.get(DELIVERIES_BASE_URL + `/customer/${id}/status/delivered`);
 };
@@ -58,6 +62,7 @@ const deliveryService = {
   onDeliveryDeposited,
   onDeliveryDelivered,
   deleteDelivery,
+  updateDelivery,
 };
 
 export default deliveryService;

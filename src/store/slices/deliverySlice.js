@@ -101,6 +101,14 @@ export const deleteDelivery = createAsyncThunk(
   }
 );
 
+export const updateDelivery = createAsyncThunk(
+  "deliveries/updateDelivery",
+  async ({ data }) => {
+    const res = await DeliveryDataService.updateDelivery(data);
+    return res.data;
+  }
+);
+
 const deliverySlice = createSlice({
   name: "deliveries",
   initialState,
@@ -169,6 +177,14 @@ const deliverySlice = createSlice({
 
     [getDeliverybyId.fulfilled]: (state, action) => {
       return [...action.payload];
+    },
+    [updateDelivery.fulfilled]: (state, action) => {
+      return {
+        ...state,
+        allDeliveries: state.allDeliveries.map((delivery) =>
+          action.payload.id === delivery.id ? action.payload : delivery
+        ),
+      };
     },
   },
 });
