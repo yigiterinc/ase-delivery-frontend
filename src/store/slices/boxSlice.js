@@ -55,8 +55,6 @@ const boxSlice = createSlice({
   initialState,
   extraReducers: {
     [createBox.fulfilled]: (state, action) => {
-      const payload = action.payload;
-
       return {
         ...state,
         boxes: state.boxes.concat(action.payload),

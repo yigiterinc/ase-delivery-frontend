@@ -7,7 +7,7 @@ const initialState = [];
 export const createUser = createAsyncThunk(
   "users/createUser",
   async ({ email, password, role }) => {
-    const res = await UserDataService.createUser({ email, password, role });
+    const res = await UserDataService.createUser(email, password, role);
     return res.data;
   }
 );
@@ -50,7 +50,7 @@ const userSlice = createSlice({
     [createUser.fulfilled]: (state, action) => {
       const payload = action.payload;
 
-      return [...state, ...payload];
+      return state.concat(payload);
     },
     [getAllUsers.fulfilled]: (state, action) => {
       return [...action.payload];

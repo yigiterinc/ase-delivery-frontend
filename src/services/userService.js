@@ -5,7 +5,7 @@ const USER_BASE_URL = CUSTOMER_AUTHENTICATION_SERVICE_BASE_URL + "/users";
 const LOGIN_URL = CUSTOMER_AUTHENTICATION_SERVICE_BASE_URL + "/login";
 const FETCH_ROLE_URL = USER_BASE_URL + "/role";
 
-const createUser = ({ email, password, role }) => {
+const createUser = (email, password, role) => {
   const userDto = { email, password, role };
   return http.post(USER_BASE_URL, userDto);
 };
@@ -27,12 +27,18 @@ const deleteUser = (id) => {
   return http.delete(USER_BASE_URL + `/${id}`);
 };
 
+export const updateUser = async (data) => {
+  console.log(data);
+  return http.put(USER_BASE_URL, data);
+};
+
 const userService = {
   createUser,
   getAllUsers,
   getUserById,
   getUserRole,
   deleteUser,
+  updateUser,
 };
 
 export const loginUser = async (email, password) => {
@@ -60,11 +66,6 @@ export const fetchRoleByToken = async (token) => {
     },
   });
   return res.data;
-};
-
-export const updateUser = async ({ data }) => {
-  console.log(data);
-  return http.put(USER_BASE_URL, data);
 };
 
 export const fetchUser = (jwt) => {

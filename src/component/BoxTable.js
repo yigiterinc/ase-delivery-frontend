@@ -23,9 +23,7 @@ const BoxTable = (props) => {
   );
 
   const [boxData, setBoxData] = useState();
-
   const [updatePerformed, setUpdatePerformed] = useState(false);
-
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(async () => {
