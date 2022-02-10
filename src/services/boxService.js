@@ -12,7 +12,6 @@ const getBoxById = ({ id }) => {
 };
 
 const getBoxByDelivererId = (id) => {
-  console.log("here:", id);
   return http.get(BOX_BASE_URL + `/deliverer/${id}`);
 };
 

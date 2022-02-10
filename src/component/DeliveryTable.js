@@ -25,17 +25,19 @@ const DeliveryTable = (props) => {
 
   const [showCreateModal, setShowCreateModal] = useState(false);
 
+  const [updatePerformed, setUpdatePerformed] = useState(false);
+
   const [deliveryData, setDeliveryData] = useState();
 
   const [tableShown, setTableShown] = useState(false);
 
   useEffect(async () => {
-    if (!deliveryData) {
+    if (!deliveryData || updatePerformed) {
       const user = JSON.parse(localStorage.getItem("user"));
       console.log(user);
       const id = user.id;
 
-      let deliveryDataToSet;
+      let deliveryDataToSet = [];
       if (props.activeDeliveries) {
         await dispatch(getActiveDeliveriesByCustomerId({ id }));
         deliveryDataToSet = activeDeliveries;
@@ -53,6 +55,7 @@ const DeliveryTable = (props) => {
       }
 
       setTableShown(true);
+      setUpdatePerformed(false);
     }
   }, [
     allDeliveries,
@@ -76,7 +79,10 @@ const DeliveryTable = (props) => {
   const CreateDeliveryModal = (props) => {
     return (
       <BaseModal {...props}>
-        <CreateDeliveryForm setShowCreateModal={setShowCreateModal} />
+        <CreateDeliveryForm
+          setShowCreateModal={setShowCreateModal}
+          setUpdatePerformed={setUpdatePerformed}
+        />
       </BaseModal>
     );
   };

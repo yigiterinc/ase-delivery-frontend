@@ -24,9 +24,10 @@ const createDelivery = (data) => {
   return http.post(DELIVERIES_BASE_URL, data);
 };
 
-const onDeliveriesCollected = ({ ids, delivererId }) => {
+const onDeliveriesCollected = ({ boxId, delivererId }) => {
+  console.log(boxId, delivererId);
   return http.put(
-    DELIVERIES_BASE_URL + `/${ids.join(",")}/collected/deliverer/${delivererId}`
+    DELIVERIES_BASE_URL + `/box/${boxId}/collected/deliverer/${delivererId}`
   );
 };
 

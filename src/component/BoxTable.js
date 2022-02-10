@@ -6,10 +6,12 @@ import {
   getBoxByDelivererId,
   getBoxes,
 } from "../store/slices/boxSlice";
+import { onDeliveriesCollected } from "../store/slices/deliverySlice";
 import CreateBoxForm from "./CreateBoxForm";
 import BaseModal from "./BaseModal";
 import { Button } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBox } from "@fortawesome/free-solid-svg-icons";
 
 const BoxTable = (props) => {
   const dispatch = useDispatch();
@@ -24,6 +26,7 @@ const BoxTable = (props) => {
   const [updatePerformed, setUpdatePerformed] = useState(false);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [boxStatuses, setBoxStatuses] = useState();
 
   useEffect(async () => {
     if (!boxData || updatePerformed) {
@@ -33,9 +36,21 @@ const BoxTable = (props) => {
       let boxesDataToSet;
       if (props.assignedBoxes) {
         await dispatch(getBoxByDelivererId({ id: userId }));
-        boxesDataToSet = delivererAssignedBoxes;
+
+        boxesDataToSet = delivererAssignedBoxes.map((dto) => {
+          const box = dto.box;
+          const statusOfDeliveries = dto.statusOfDeliveries;
+
+          return {
+            ...box,
+            statusOfDeliveries,
+          };
+        });
+
+        console.log(boxesDataToSet);
       } else {
         await dispatch(getBoxes());
+        console.log(boxes);
         boxesDataToSet = boxes;
       }
 
@@ -102,6 +117,11 @@ const BoxTable = (props) => {
             columns={columns}
             data={boxData}
             title={props.assignedBoxes ? "Assigned Boxes" : "Boxes"}
+            localization={{
+              header: {
+                actions: "Collect",
+              },
+            }}
             actions={
               user.role === "DISPATCHER"
                 ? [
@@ -117,14 +137,23 @@ const BoxTable = (props) => {
                 : user.role === "DELIVERER"
                 ? [
                     (rowData) => ({
-                      icon: () => (
-                        <FontAwesomeIcon icon="fa-solid fa-box-check" />
-                      ),
+                      icon: () => <FontAwesomeIcon icon={faBox} />,
                       tooltip: "Collect",
+                      disabled: rowData.statusOfDeliveries === "COLLECTED",
                       onClick: () => {
-                        console.log("i am clicked ");
+                        console.log(rowData);
+                        const id = rowData.id;
+                        const userId = JSON.parse(
+                          localStorage.getItem("user")
+                        ).id;
+                        console.log(userId);
+                        dispatch(
+                          onDeliveriesCollected({
+                            boxId: id,
+                            delivererId: userId,
+                          })
+                        );
                       },
-                      //disabled: rowData.status ===
                     }),
                   ]
                 : []

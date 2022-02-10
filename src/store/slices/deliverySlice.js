@@ -63,8 +63,13 @@ export const getDeliveriesAssignedToDeliverer = createAsyncThunk(
 
 export const onDeliveriesCollected = createAsyncThunk(
   "deliveries/onDeliveriesCollected",
-  async ({ ids, delivererId }) => {
-    const res = await DeliveryDataService.onDeliveriesCollected(ids);
+  async ({ boxId, delivererId }) => {
+    console.log(boxId, delivererId);
+
+    const res = await DeliveryDataService.onDeliveriesCollected({
+      boxId,
+      delivererId,
+    });
     return res.data;
   }
 );
@@ -101,7 +106,10 @@ const deliverySlice = createSlice({
   initialState,
   extraReducers: {
     [createDelivery.fulfilled]: (state, action) => {
-      state.push(action.payload);
+      return {
+        ...state,
+        allDeliveries: [...state["allDeliveries"], ...action.payload],
+      };
     },
     [getDeliveries.fulfilled]: (state, action) => {
       return {

@@ -37,6 +37,7 @@ function CreateDeliveryForm(props) {
     await dispatch(createDelivery(data));
     dispatch(getDeliveries());
     props.setShowCreateModal(false);
+    props.setUpdatePerformed(true);
   };
 
   return (
