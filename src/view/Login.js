@@ -25,8 +25,8 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const [loggedInUser, setLoggedInUser] = useState(null);
-  const [email, setEmail] = useState("yigit.erinc@tum.de");
-  const [password, setPassword] = useState("test123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (loggedInUser) {

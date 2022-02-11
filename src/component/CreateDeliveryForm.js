@@ -4,15 +4,10 @@ import { useDispatch } from "react-redux";
 import { createDelivery, getDeliveries } from "../store/slices/deliverySlice";
 
 function CreateDeliveryForm(props) {
-  const [createDeliveryCustomerId, setCreateDeliveryCustomerId] = useState(
-    "61f886cc7d692c2f3a184d9a"
-  );
-  const [createDeliveryBoxId, setCreateDeliveryBoxId] = useState(
-    "61f9ad886271910aae30fd25"
-  );
-  const [createDeliveryDelivererId, setCreateDeliveryDelivererId] = useState(
-    "6202d94d7772f8c1cf94e5d8"
-  );
+  const [createDeliveryCustomerId, setCreateDeliveryCustomerId] = useState("");
+  const [createDeliveryBoxId, setCreateDeliveryBoxId] = useState("");
+  const [createDeliveryDelivererId, setCreateDeliveryDelivererId] =
+    useState("");
 
   const dispatch = useDispatch();
 
