@@ -16,7 +16,7 @@ export const Header = () => {
       bg="info"
       variant="dark"
       expand="md"
-      style={{ height: "9vh" }}
+      style={{ height: "7vh" }}
     >
       <Navbar.Brand>
         <FontAwesomeIcon
