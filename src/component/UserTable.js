@@ -52,7 +52,6 @@ const UserTable = (props) => {
     { field: "id", title: "ID", editable: "never" },
     { field: "email", title: "Email" },
     { field: "role", title: "Role", editable: "never" },
-    { field: "rfid", title: "RFID" },
   ];
 
   return (
