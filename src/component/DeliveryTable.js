@@ -12,7 +12,7 @@ import BaseModal from "./BaseModal";
 
 import CreateDeliveryForm from "./CreateDeliveryForm";
 
-import { Button, TextField } from "@material-ui/core";
+import { history } from "../history";
 
 const DeliveryTable = (props) => {
   const dispatch = useDispatch();
@@ -120,6 +120,11 @@ const DeliveryTable = (props) => {
               },
             },
           ]}
+          onRowClick={
+            !props.activeDeliveries
+              ? null
+              : (event, rowData) => history.push(`/track/${rowData.id}`)
+          }
           editable={
             user.role !== "DISPATCHER"
               ? {}

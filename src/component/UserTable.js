@@ -5,6 +5,8 @@ import MaterialTable from "material-table";
 import { getAllUsers, deleteUser, updateUser } from "../store/slices/userSlice";
 import { updateBox } from "../store/slices/boxSlice";
 
+import { history } from "../history";
+
 import { Button } from "@material-ui/core";
 import BaseModal from "./BaseModal";
 import CreateUserForm from "./CreateUserForm";
