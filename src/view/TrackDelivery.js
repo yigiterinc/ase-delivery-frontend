@@ -20,6 +20,7 @@ import { Header } from "../component/Header";
 
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Footer from "../component/Footer";
 
 const useStyles = makeStyles((theme) => ({
   timeline: {
@@ -90,7 +91,7 @@ const TrackDelivery = () => {
                   <Typography variant="h6" component="h1">
                     Created
                   </Typography>
-                  <Typography>You're order is created!</Typography>
+                  <Typography>Your order is created!</Typography>
                 </Paper>
               </TimelineContent>
             </TimelineItem>
@@ -121,7 +122,7 @@ const TrackDelivery = () => {
                     Collected
                   </Typography>
                   <Typography>
-                    You're order is collected by the deliverer!
+                    Your order is collected by the deliverer!
                   </Typography>
                 </Paper>
               </TimelineContent>
@@ -156,7 +157,7 @@ const TrackDelivery = () => {
                   <Typography variant="h6" component="h1">
                     Deposited
                   </Typography>
-                  <Typography>You're order is ready to pick-up!</Typography>
+                  <Typography>Your order is ready to pick-up!</Typography>
                 </Paper>
               </TimelineContent>
             </TimelineItem>
@@ -190,13 +191,14 @@ const TrackDelivery = () => {
                   <Typography variant="h6" component="h1">
                     Delivered
                   </Typography>
-                  <Typography>You're order is delivered!</Typography>
+                  <Typography>Your order is delivered!</Typography>
                 </Paper>
               </TimelineContent>
             </TimelineItem>
           </Timeline>
         </div>
       )}
+      <Footer />
     </>
   );
 };
