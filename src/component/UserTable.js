@@ -19,6 +19,8 @@ const UserTable = (props) => {
   const [userData, setUserData] = useState();
   const [updatePerformed, setUpdatePerformed] = useState();
 
+  const [showSpinner, setShowSpinner] = useState(true);
+
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   const CreateUserModal = (props) => {
@@ -34,11 +36,13 @@ const UserTable = (props) => {
 
   useEffect(async () => {
     if (updatePerformed || (!userData && !tableShown)) {
+      setShowSpinner(true);
       await dispatch(getAllUsers());
       console.log(users);
       setUserData(users);
       setTableShown(true);
       setUpdatePerformed(false);
+      setShowSpinner(false);
     }
   }, [users, tableShown, userData, updatePerformed]);
 
@@ -67,6 +71,7 @@ const UserTable = (props) => {
             columns={columns}
             data={users}
             title={"Users"}
+            isLoading={showSpinner}
             actions={[
               {
                 icon: "add",
